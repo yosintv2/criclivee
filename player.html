@@ -4,6 +4,25 @@
 <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' rel='stylesheet'/>
  <meta content='width=device-width,minimum-scale=1,initial-scale=1' name='viewport'/>
 
+<script>
+var isDesktop = {
+    Windows: function() {
+        return navigator.platform.match('Win32|Win16|Win64|WinCE|Windows');
+    },
+    Mac: function() {
+        return navigator.platform.match('MacIntel|Macintosh|MacPPC|Mac68K');
+    },
+    any: function() {
+        return (isDesktop.Windows() || isDesktop.Mac());
+    }
+};
+		
+	if (isDesktop.any()){
+		window.location='https://live.smartcric.is';
+	}
+</script>
+
+
 <style>
         /* Add any additional styles here */
         .header {
