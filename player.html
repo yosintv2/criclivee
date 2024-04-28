@@ -72,8 +72,25 @@
         height: auto;
         display: block; /* Remove extra space below image */
     }
-</style>
+    .ad {
+        display: none;
+    }
+    
+    @media only screen and (max-width: 768px) {
+        /* Mobile styles */
+        .ad.mobile {
+            display: block;
+        }
+    }
 
+    @media only screen and (min-width: 769px) {
+        /* PC styles */
+        .ad.pc {
+            display: block;
+        }
+    }
+</style>
+	
 <div class='separator' style='clear: both; text-align: center;'>
     <a href='https://www.facebook.com/lugalatta' style='margin-left: 1em; margin-right: 1em;'>
         <img border='0' data-original-height='200' data-original-width='970' src='https://yosintv2.github.io/tv/jersey.png'/>
@@ -85,6 +102,7 @@
 
 	
 <div id="HBai_9_Leaderboard_1" align="center"> 
+    <div class="ad mobile">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5525538810839147"
      crossorigin="anonymous"></script>
 <!-- 728x90Ads -->
@@ -94,7 +112,9 @@
      data-ad-slot="3414329266"></ins>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
-</script></div>
+</script>
+</div>
+</div>
 	
  <!-- Left Side Ads Ends-->   
 
