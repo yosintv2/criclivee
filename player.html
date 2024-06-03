@@ -221,13 +221,22 @@ Push Notification
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', (event) => {
+  window.addEventListener('load', () => {
     setTimeout(() => {
       document.getElementById('ad').style.display = 'block';
     }, 5000); // 5000 milliseconds = 5 seconds
   });
 </script>
  
+ <!--
+ <script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    setTimeout(() => {
+      document.getElementById('ad').style.display = 'block';
+    }, 5000); // 5000 milliseconds = 5 seconds
+  });
+</script>
+ -->
 
  
 <!-- Floating Sticky Ads-->
