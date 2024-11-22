@@ -228,7 +228,67 @@ $(document).ready(function() {$(&#39;img#closed&#39;).click(function(){$(&#39;#b
 </div>
 </div>
 
+<style>
+    /* Container for the floating ad */
+    #floatbox-container {
+        position: fixed;
+        width: 150px;
+        height: 150px;
+        bottom: 50px; /* Adjusted to sit higher */
+        left: 20px; /* Moved to the left side */
+        overflow: hidden;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        z-index: 1000;
+    }
 
+    /* Scaling down the ad content */
+    #floatbox {
+        transform: scale(0.5); /* Scale down to fit in 150x150 box */
+        transform-origin: top left;
+        width: 300px;
+        height: 250px;
+    }
+
+    /* Close button */
+    .close-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: #fff;
+        border: none;
+        color: #333;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+        z-index: 1001;
+    }
+    .close-button:hover {
+        color: #ff0000;
+    }
+</style>
+<div id="floatbox-container">
+    <button class="close-button" onclick="closeAd()">&#215;</button>
+    <div id="floatbox">
+    
+    <ins class='adsbygoogle' data-ad-client='ca-pub-5525538810839147' data-ad-slot='5912194004' style='display:inline-block;width:320px;height:50px'/>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+     
+</div>
+</div>
+
+<script>
+function closeAd() {
+document.getElementById('floatbox-container').style.display = 'none';
+}
+</script>
+
+
+ 
 <!-- 320x50 Floating Sticky Ads-->
 <script type='text/javascript'>
 $(document).ready(function() {$(&#39;img#closed&#39;).click(function(){$(&#39;#bl_banner&#39;).hide(90);});});
