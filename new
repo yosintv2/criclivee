@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="YoSinTV is sports website that covers all the Cricket Matches, World Cup, International/Domestic Matches, Football Matches, etc."/>
+<!-- <meta name="robots" content="follow, index"/> -->
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="YoSinTV - Cricket | Football | Playing XI | Match Preview" />
+<meta property="og:description" content="YoSinTV is sports website that covers all the Cricket Matches, World Cup, International/Domestic Matches, Football Matches, etc." />
+<meta property="og:url" content="https://www.yosin-tv.net/" />
+<meta property="og:site_name" content="YoSinTV" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="YoSinTV - Cricket | Football | Playing XI | Match Preview" />
+<meta name="twitter:description" content="YoSinTV is sports website that covers all the Cricket Matches, World Cup, International/Domestic Matches, Football Matches, etc." />
+
+<style>
+    .livee { display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; margin: 5px 0; padding: 5px; border: 2px solid #000; border-radius: 5px; cursor: pointer; transition: box-shadow 0.3s ease; background-color: red; color: white; }
+    .livee:hover { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+    .livee-name { flex: 2; text-align: center; color: white; font-weight: bold; }
+    input.MyButton { width: 200px; padding: 7px; cursor: pointer; font-weight: bold; font-size: 100%; background: #0a0647; color: #fff; border: 1px solid #0a0647; border-radius: 10px; } input.MyButton:hover { color: #ff0000; background: #000; border: 1px solid #fff; }
+</style>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="/favicon.png" type="image/webp">
+    <link rel="icon" href="/favicon.png" type="image/webp">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://www.getemoji.online/stylee.css" rel="stylesheet">
+    <title>YoSinTV - Cricket | Football | Playing XI | Match Preview</title>
+
+<!-- Player JS File Start-->
+ <script>
+    function getParam ( sname )
+    {
+      var params = location.search.substr(location.search.indexOf("?")+1);
+      var sval =  params.replace("url=", "");
+      
+      return sval;
+    }
+    var sv = getParam("sv");
+    </script>
+
+        
+    <script src="https://yosintv.github.io/yosintv/football/jwplayerr.js"></script>
+    <body onload="init()">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script>$(document).ready(function() {
+      $("img").on("contextmenu",function(){
+         return false;
+      }); 
+  }); </script>
+
+
+</head>
+<body>
+
+
+<!-- Updated Navbar Section (Dark Themed) -->
+<div class="container">
+<nav class="navbar navbar-light" style="background-color: #e7e9eb;">
+    <div class="container-fluid">
+        
+          <a class="navbar-brand" href="https://www.yosin-tv.net/">
+    <img src="https://yosintv2.github.io/tv/yosintv1.png" width="120" height="40" class="d-inline-block align-top" alt=""></a>
+  
+  
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="https://www.yosin-tv.net/">Cricket</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="https://www.yosin-tv.net/">Football</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link " href="https://www.yosin-tv.net/">Others</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    
+<!-- Header Section -->
+<header class="header">
+<h1><b>YoSinTV Live Stream</b></h1>
+<p><b>Note:</b> Brave Broswer & Ad Blocker hides Match Live Link !! </p>
+
+<p bis_skin_checked='1' class='notice' id='notice' style='background: rgb(244 17 17); border-radius: 0px; border: 0.01pc solid rgb(0, 52, 70); 
+box-sizing: border-box; color: #003446; font-family: Raleway, Arial, sans-serif; font-size: 1pc; list-style: none; margin: 0.275pc; outline: none; 
+overflow: hidden; padding: 0.2pc; text-align: center; vertical-align: baseline;'><b style='background: 0px 0px; border: 0px; box-sizing: 
+border-box; list-style: none; margin: 0px; outline: none; padding: 0px; vertical-align: baseline;'><a style='background: 0px 0px; border: 0px; 
+box-sizing: border-box; color: white; margin: 0px; outline: none; padding: 0px; text-decoration-line: none; 
+transition: all 0s ease 0s; vertical-align: baseline;' target=''> Scroll Down &amp; Select Match Links !!  </a></b></p>
+
+</header>
+
+    
+<center>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5525538810839147"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5525538810839147"
+     data-ad-slot="4345862479"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+    
+
+
+<div class="container mt-4 seo-content">
+    
+<p>Watch the live of this match in HD Quality, Scroll down to check out every links for Smooth Live Stream of this match.</p>
+
+<p>Predicted lineups are available for the match a few days in advance while the actual lineup will be available about an hour ahead of the match. </p>
+
+<center>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5525538810839147"
+     data-ad-slot="3542194806"
+     data-ad-format="horizontal"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>		
+</center>
+
+
+        
+<ul>
+<li> 👉 <i><b> The match links are activated 15 minutes before kickoff. </b></i></li>
+<li> 👉 <i><b> Go to below links to get matches. </b></i></li>
+<li> 👉 <i><b> If the first link doesn’t work, go for the second or third link. </b></i></li>
+</ul> 
+
+<!-- Telegram Link -->
+<a style='display:block;font-size:16px;font-weight:500;text-align:center;border-radius:4px;padding:5px;background:#389ce9;text-decoration:none;color:#fff;' href='https://t.me/yosintvlive' target='_blank' rel="noopener"><svg style='width:30px;height:50px;vertical-align:middle;margin:0px 5px;' viewbox='0 0 21 18'><g fill='none'><path fill='#ffffff' d='M0.554,7.092 L19.117,0.078 C19.737,-0.156 20.429,0.156 20.663,0.776 C20.745,0.994 20.763,1.23 20.713,1.457 L17.513,16.059 C17.351,16.799 16.62,17.268 15.88,17.105 C15.696,17.065 15.523,16.987 15.37,16.877 L8.997,12.271 C8.614,11.994 8.527,11.458 8.805,11.074 C8.835,11.033 8.869,10.994 8.905,10.958 L15.458,4.661 C15.594,4.53 15.598,4.313 15.467,4.176 C15.354,4.059 15.174,4.037 15.036,4.125 L6.104,9.795 C5.575,10.131 4.922,10.207 4.329,10.002 L0.577,8.704 C0.13,8.55 -0.107,8.061 0.047,7.614 C0.131,7.374 0.316,7.182 0.554,7.092 Z'></path></g></svg>Join YoSinTV on Telegram</a>
+
+
+</div>
+
+    
+<center>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5525538810839147"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5525538810839147"
+     data-ad-slot="4345862479"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+
+
+
+    
+<center>
+<input style="text-align: center;" class="MyButton" 
+onclick="window.location.href='https://yosintv2.github.io/tv/ads.html'" type="button" value="Refresh Live Links"/>
+</center>
+
+
+
+     
+<div class="disclaimer" style="text-align: center;"><b><span style="color: black;"> Skip 1-2 Ads | Watch Peacefully !! </span></b></div> 
+<iframe id="iframe" allow="encrypted-media" allowfullscreen="allowfullscreen" allowtransparency="true" frameborder="0" height="100%" marginheight="0" scrolling="no" marginwidth="0"  width="100%"></iframe> 
+
+
+
+  
+
+    
+<center>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5525538810839147"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5525538810839147"
+     data-ad-slot="4345862479"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+    
+
+<!-- SEO Content Section -->
+<div class="container mt-4 seo-content">
+    <h2> What is YoSinTV ?</h2>
+    <p>YoSinTV is sports website that covers all the Cricket Matches, World Cup, International/Domestic Matches, Football Matches, etc.</p>
+
+    <h3>How Does YoSinTV Work??</h3>
+    <p>YoSinTV Work gives you full access, where you will find a comprehensive Dashboard showing ongoing tournaments and matches for all teams. For example, if there’s a match between two teams, you’ll see a ‘Live Now’ button next to the match details.  Clicking on it will take you to a live stream of the match. The schedule for upcoming matches, whether today or tomorrow, is conveniently provided. Yosin TV’s platform is user-friendly, simple, and clean, making navigation easy. Enjoy a variety of live streams in cricket, football, soccer, and other sections.</p>
+
+   
+    <h3>How to watch live-streaming matches on YoSinTV??</h3>
+    <p>To watch live matches on YoSinTV, find the sport and match you want and click the link to access the live stream.</p>
+
+    <h3>Is YoSinTV Free?</h3>
+    <p>YoSinTV itself is free to access, but some live streams may only be available on paid tiers or subscriptions, YoSinTV’s platform is user-friendly, simple, and clean, making navigation easy. Enjoy a variety of live streams in cricket, football, soccer, and other sections.
+
+</p>
+
+    <!-- Add Images -->
+    <div class="row">
+        <div class="col-md-6">
+            <img src="/zzz/feature.png" alt="YoSinTV Football Live Stream" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <img src="/zzz/feature1.png" alt="YoSinTV Cricket Live Stream" class="img-fluid">
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<center>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5525538810839147"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-5525538810839147"
+     data-ad-slot="4345862479"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>
+
+    
+
+
+
+<!-- Footer Section -->
+<footer>
+    <p>&copy; 2024 YoSinTV </p>
+    <p>
+        <a href="/page/about.html">About Us</a> | 
+        <a href="/page/contact.html">Contact</a> | 
+        <a href="/page/disclaimer.html">Disclaimer</a>
+       <a href="/page/privacy.html">Privacy</a>
+       <a href="/page/terms-conditions.html">Terms & Conditions </a>
+    </p>
+
+    
+<!-- BEGIN: Powered by Supercounters.com -->
+<center><script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+<script type="text/javascript">sc_online_i(1703308,"343a40","343a40");</script><br><noscript>
+<a href="https://www.supercounters.com/">free online counter</a></noscript>
+</center>
+<!-- END: Powered by Supercounters.com -->
+</footer>
+
+
+</div>
+<!-- Sticky Footer Ads-->
+<script type='text/javascript'>
+$(document).ready(function() {$('img#closed').click(function(){$('#bl_banner').hide(90);});});
+</script>
+<div id='fixedban' style='width:100%;margin:auto;text-align:center;float:none;overflow:hidden;display:scroll;position:fixed;bottom:0;z-index:999;-webkit-transform:translateZ(0);'>
+<div><a id='close-fixedban' onclick='document.getElementById("fixedban").style.display = "none";' style='cursor:pointer;'><img alt='close' src=' https://yosintv2.github.io/bkp/close.gif ' style='vertical-align:middle;' title='close button'/></a>
+</div><div style='text-align:center;display:block;max-width:300px;height:auto;overflow:hidden;margin:auto'>
+
+<ins class='adsbygoogle' data-ad-client='ca-pub-5525538810839147' data-ad-slot='5912194004' style='display:inline-block;width:300px;height:250px'></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src='https://cdn.jsdelivr.net/gh/yosintv2/bkp/player.js'/>
+
+
+
+</body>
+</html>
