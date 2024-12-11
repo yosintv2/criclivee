@@ -95,7 +95,61 @@ cookieChoices = {};
 }
 </script>
 
-  
+<!--Footer Banner-->
+<style>
+
+        .footer-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .banner-content {
+            position: relative;
+            max-width: 728px;
+            height: 90px;
+        }
+
+        .banner-content a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background-color: #ff5e5e;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn:hover {
+            background-color: #e04e4e;
+        }
+    </style>
+
+	
 <style>
 
 /*Font Library https://fonts.google.com/ */
@@ -446,8 +500,24 @@ $(document).ready(function() {$('img#closed').click(function(){$('#bl_banner').h
 </div></div>
 
 
+<div class="footer-banner" id="footerBanner">
+        <div class="banner-content">
+            <a href="https://example.com" target="_blank">
+                <img src="https://via.placeholder.com/728x90" alt="Banner Ad" style="width: 100%; height: 100%;">
+            </a>
+            <button class="close-btn" onclick="closeBanner()">&times;</button>
+        </div>
+    </div>
 
+    <script>
+        function closeBanner() {
+            const banner = document.getElementById('footerBanner');
+            banner.style.display = 'none';
+        }
+    </script>
+
+
+
+	
 </body> 
-
-
 </html>
