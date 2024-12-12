@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plyr with VAST Ad</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <style>
+        #adContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: black;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: relative; width: 640px; height: 360px;">
+        <div id="adContainer"></div>
+<video id="player" controls preload="metadata" poster="https://yosintv2.github.io/tv/yosintv.png" class="plyr">
+        <source id="videoSource" type="application/x-mpegURL"/>
+    </video>
+    </div>
+
+
+      <script>
+        // Function to get URL parameters
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+
+        // Get video URL parameter and set it as the video source
+        var videoUrl = getParameterByName('url');
+        if (videoUrl) {
+            document.getElementById('videoSource').setAttribute('src', videoUrl);
+            document.getElementById('player').load();
+        }
+    </script>
+
+  
+    <script>
+        // Initialize Plyr
+        const player = new Plyr('#plyr-video');
+
+        // Ad variables
+        const adContainer = document.getElementById('adContainer');
+        const adDisplayContainer = new google.ima.AdDisplayContainer(adContainer);
+        const adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+
+        // Initialize Ad Display
+        adDisplayContainer.initialize();
+
+        // Listen for ad errors
+        adsLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, (adError) => {
+            console.error('Ad error:', adError.getError());
+            adContainer.style.display = 'none';
+        });
+
+        // Listen for ads loaded
+        adsLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, (event) => {
+            const adsManager = event.getAdsManager(player.media);
+
+            // Play the ad
+            try {
+                adsManager.init(640, 360, google.ima.ViewMode.NORMAL);
+                adsManager.start();
+                adContainer.style.display = 'block';
+            } catch (adError) {
+                console.error('Error during ad playback:', adError);
+                adContainer.style.display = 'none';
+            }
+        });
+
+        // Request VAST ad
+        function playAd() {
+            const adsRequest = new google.ima.AdsRequest();
+            adsRequest.adTagUrl = 'https://www.videosprofitnetwork.com/watch.xml?key=29fff108827be05f8a658309bd6f2302';
+            adsRequest.linearAdSlotWidth = 640;
+            adsRequest.linearAdSlotHeight = 360;
+            adsRequest.nonLinearAdSlotWidth = 640;
+            adsRequest.nonLinearAdSlotHeight = 360;
+
+            adsLoader.requestAds(adsRequest);
+        }
+
+        // Trigger ad before video playback
+        player.on('play', () => {
+            if (!adContainer.classList.contains('ad-played')) {
+                player.pause();
+                playAd();
+                adContainer.classList.add('ad-played');
+            }
+        });
+    </script>
+</body>
+</html>
