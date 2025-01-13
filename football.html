@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Redirecting...</title>
+</head>
+<body>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const customId = urlParams.get('url');
+    const newurl = `https://01.getemoji.online/?url=https://www.yosintv.link/flive.html?url=${customId}`;
+    window.location.replace(newurl);
+</script>
+</body>
+</html>
