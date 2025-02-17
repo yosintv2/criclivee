@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman - The Money Focus</title>
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <style>
+        :root {
+            --color-bg: #1e1b4b;
+            --color-text: #ffffff;
+            --color-text-muted: #a5b4fc;
+            --color-primary: #ec4899;
+            --color-secondary: #8b5cf6;
+            --color-accent: #06b6d4;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #word-display {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5rem;
+        }
+
+        #guesses {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        #hangman {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        #letter-input {
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            width: 2rem;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+
+        button {
+            background-color: var(--color-primary);
+            color: var(--color-text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        button:hover {
+            background-color: var(--color-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Hangman</h1>
+        <div id="word-display"></div>
+        <div id="guesses">Guesses: </div>
+        <div id="hangman"></div>
+        <div>
+            <input type="text" id="letter-input" maxlength="1">
+            <button id="guess-button">Guess</button>
+        </div>
+        <button id="new-game-button" style="margin-top: 1rem;">New Game</button>
+    </div>
+
+    <script>
+        const words = ['javascript', 'html', 'css', 'python', 'react', 'nodejs', 'database', 'algorithm', 'frontend', 'backend'];
+        const hangmanStages = ['O', 'O-', 'O-|', 'O-|-', 'O-|-<', 'O-|-<>'];
+
+        let word, guessedLetters, remainingGuesses;
+
+        const wordDisplay = document.getElementById('word-display');
+        const guessesDisplay = document.getElementById('guesses');
+        const hangmanDisplay = document.getElementById('hangman');
+        const letterInput = document.getElementById('letter-input');
+        const guessButton = document.getElementById('guess-button');
+        const newGameButton = document.getElementById('new-game-button');
+
+        function startNewGame() {
+            word = words[Math.floor(Math.random() * words.length)];
+            guessedLetters = new Set();
+            remainingGuesses = 6;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            wordDisplay.textContent = word
+                .split('')
+                .map(letter => guessedLetters.has(letter) ? letter : '_')
+                .join(' ');
+            guessesDisplay.textContent = 'Guesses: ' + Array.from(guessedLetters).join(', ');
+            hangmanDisplay.textContent = hangmanStages[6 - remainingGuesses];
+        }
+
+        function makeGuess() {
+            const letter = letterInput.value.toLowerCase();
+            if (letter.length !== 1 || !/[a-z]/.test(letter) || guessedLetters.has(letter)) {
+                return;
+            }
+
+            guessedLetters.add(letter);
+            if (!word.includes(letter)) {
+                remainingGuesses--;
+            }
+
+            updateDisplay();
+            checkGameEnd();
+            letterInput.value = '';
+        }
+
+        function checkGameEnd() {
+            if (word === wordDisplay.textContent.replace(/ /g, '')) {
+                alert('Congratulations! You won!');
+                disableInput();
+            } else if (remainingGuesses === 0) {
+                alert('Game over! The word was: ' + word);
+                disableInput();
+            }
+        }
+
+        function disableInput() {
+            letterInput.disabled = true;
+            guessButton.disabled = true;
+        }
+
+        guessButton.addEventListener('click', makeGuess);
+        newGameButton.addEventListener('click', startNewGame);
+        letterInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') makeGuess();
+        });
+
+        startNewGame();
+    </script>
+</body>
+</html>
+

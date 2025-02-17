@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - Play Free Online | The Money Focus</title>
+    <meta name="description" content="Play the classic Snake game for free online. Test your reflexes and strategy in this addictive and fun browser game!">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="index.html">
+    <meta property="og:title" content="Snake Game - Play Free Online | The Money Focus">
+    <meta property="og:description" content="Play the classic Snake game for free online. Test your reflexes and strategy in this addictive and fun browser game!">
+    <meta property="og:image" content="assets/images/favicon.svg">
+    <meta property="og:image:width" content="64">
+    <meta property="og:image:height" content="64">
+    <meta property="og:image:alt" content="Snake Game Logo">
+    <meta property="og:image:type" content="image/svg+xml">
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --background-color: #f3f4f6;
+            --text-color: #1f2937;
+            --food-color: #ef4444;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        canvas {
+            background: #fff;
+            border: 2px solid var(--primary-color);
+            display: block;
+            margin: 1rem auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin: 1rem 0;
+            font-size: 1.25rem;
+        }
+
+        .game-over {
+            display: none;
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            color: var(--food-color);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .control-btn:hover {
+            background-color: #2563eb;
+        }
+
+        .action-btn {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            color: #fff;
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background-color: #059669;
+        }
+
+        @media (min-width: 768px) {
+            .controls {
+                display: none;
+            }
+        }
+
+        .site-header {
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .mobile-menu span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            margin: 5px 0;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: white;
+                padding: 1rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.5rem 0;
+            }
+
+            /* Animate hamburger menu */
+            .mobile-menu[aria-expanded="true"] span:first-child {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .mobile-menu[aria-expanded="true"] span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu[aria-expanded="true"] span:last-child {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+        }
+
+        .nav-links.active {
+            display: flex;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            flex-direction: column;
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-links.active li {
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+        }
+
+        .site-footer {
+            background-color: #1f2937;
+            color: #fff;
+            padding: 3rem 1rem;
+            margin-top: auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: #9ca3af;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+           text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                justify-content: center;
+            }
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            margin-left: 0.5rem;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="/" class="logo-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="30" height="30">
+                        <circle cx="32" cy="32" r="30" fill="#3b82f6" stroke="#1f2937" stroke-width="2"/>
+                        <path d="M32 12c-11 0-20 9-20 20s9 20 20 20 20-9 20-20-9-20-20-20zm0 36c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16z" fill="#10b981"/>
+                        <circle cx="24" cy="28" r="2" fill="#fff"/>
+                        <circle cx="40" cy="28" r="2" fill="#fff"/>
+                        <path d="M32 36c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" fill="#ef4444"/>
+                    </svg>
+                    <span class="logo-text">The Money Focus</span>
+                </a>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/privacy.html">Privacy Policy</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-menu" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-links">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="game-container">
+            <h1>Snake Game</h1>
+            <div class="scoreboard">
+                <div>Score: <span id="score">0</span></div>
+                <div>High Score: <span id="highScore">0</span></div>
+            </div>
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <div class="game-over">Game Over!</div>
+            <button class="action-btn" id="startBtn">Start Game</button>
+            <button class="action-btn" id="pauseBtn" style="display: none;">Pause</button>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" id="upBtn">↑</button>
+            <button class="control-btn" id="leftBtn">←</button>
+            <button class="control-btn" id="rightBtn">→</button>
+            <button class="control-btn" id="downBtn">↓</button>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>The Money Focus is a website that provides free online games and other resources to help you learn about money and personal finance. Our mission is to make financial education accessible and enjoyable for everyone.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/terms.html">Terms of Service</a></li>
+                    <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="/contact.html">Contact</a></li>
+                    <li><a href="/about.html">About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Money Focus. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreElement = document.getElementById("score");
+        const highScoreElement = document.getElementById("highScore");
+        const gameOverElement = document.querySelector(".game-over");
+        const startButton = document.getElementById("startBtn");
+        const pauseButton = document.getElementById("pauseBtn");
+
+        const cellSize = 20;
+        const canvasSize = canvas.width; // Square canvas
+        let snake, direction, food, score, highScore, gameInterval, isPaused;
+
+        // Sound effects
+        const eatSound = new Audio('/sounds/eating-sound-effect-36186.mp3');
+            const gameOverSound = new Audio('/sounds/wrong-47985.mp3');
+
+        // Add error handling for audio
+        eatSound.onerror = () => console.log('Error loading eat sound');
+        gameOverSound.onerror = () => console.log('Error loading game over sound');
+
+        // Modify the sound playing to prevent errors
+        function playSound(sound) {
+            try {
+                sound.play().catch(error => console.log('Error playing sound:', error));
+            } catch (error) {
+                console.log('Error playing sound:', error);
+            }
+        }
+
+        function initGame() {
+            snake = [{ x: 8, y: 8 }];
+            direction = "right";
+            score = 0;
+            isPaused = false;
+            food = generateFood();
+            gameOverElement.style.display = "none";
+            startButton.textContent = "Restart";
+            pauseButton.style.display = "inline-block";
+            pauseButton.textContent = "Pause";
+            updateScore();
+        }
+
+        function generateFood() {
+            let position;
+            do {
+                position = {
+                    x: Math.floor(Math.random() * (canvasSize / cellSize)),
+                    y: Math.floor(Math.random() * (canvasSize / cellSize)),
+                };
+            } while (snake.some(segment => segment.x === position.x && segment.y === position.y));
+            return position;
+        }
+
+        function updateScore() {
+            scoreElement.textContent = score;
+            if (score > highScore) {
+                highScore = score;
+                highScoreElement.textContent = highScore;
+                localStorage.setItem('snakeHighScore', highScore);
+            }
+        }
+
+        function drawSnake() {
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+            snake.forEach(segment => {
+                ctx.fillRect(
+                    segment.x * cellSize,
+                    segment.y * cellSize,
+                    cellSize - 1,
+                    cellSize - 1
+                );
+            });
+        }
+
+        function drawFood() {
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--food-color');
+            ctx.fillRect(
+                food.x * cellSize,
+                food.y * cellSize,
+                cellSize - 1,
+                cellSize - 1
+            );
+        }
+
+        function moveSnake() {
+            const head = { ...snake[0] };
+
+            switch (direction) {
+                case "up": head.y -= 1; break;
+                case "down": head.y += 1; break;
+                case "left": head.x -= 1; break;
+                case "right": head.x += 1; break;
+            }
+
+            // Wrap-around logic
+            head.x = (head.x + canvasSize / cellSize) % (canvasSize / cellSize);
+            head.y = (head.y + canvasSize / cellSize) % (canvasSize / cellSize);
+
+            // Check collision with self
+            if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+                gameOver();
+                return;
+            }
+
+            snake.unshift(head);
+
+            // Check if snake eats food
+            if (head.x === food.x && head.y === food.y) {
+                score += 1;
+                updateScore();
+                food = generateFood();
+                playSound(eatSound);
+            } else {
+                snake.pop();
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSnake();
+            drawFood();
+        }
+
+        function gameOver() {
+            clearInterval(gameInterval);
+            gameOverElement.style.display = "block";
+            startButton.textContent = "Restart";
+            pauseButton.style.display = "none";
+            playSound(gameOverSound);
+        }
+
+        function gameLoop() {
+            if (!isPaused) {
+                moveSnake();
+                draw();
+            }
+        }
+
+        function startGame() {
+            initGame();
+            clearInterval(gameInterval);
+            gameInterval = setInterval(gameLoop, 150);
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            pauseButton.textContent = isPaused ? "Resume" : "Pause";
+        }
+
+        function changeDirection(newDirection) {
+            const opposites = { up: "down", down: "up", left: "right", right: "left" };
+            if (newDirection !== opposites[direction]) {
+                direction = newDirection;
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "ArrowUp": changeDirection("up"); break;
+                case "ArrowDown": changeDirection("down"); break;
+                case "ArrowLeft": changeDirection("left"); break;
+                case "ArrowRight": changeDirection("right"); break;
+                case " ": togglePause(); break;
+            }
+        });
+
+        startButton.addEventListener("click", startGame);
+        pauseButton.addEventListener("click", togglePause);
+
+        // Touch controls
+        document.getElementById("upBtn").addEventListener("click", () => changeDirection("up"));
+        document.getElementById("downBtn").addEventListener("click", () => changeDirection("down"));
+        document.getElementById("leftBtn").addEventListener("click", () => changeDirection("left"));
+        document.getElementById("rightBtn").addEventListener("click", () => changeDirection("right"));
+
+        // Load high score from local storage
+        highScore = localStorage.getItem('snakeHighScore') || 0;
+        highScoreElement.textContent = highScore;
+
+        startGame();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu functionality
+            const mobileMenuButton = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            let isMenuOpen = false;
+
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isMenuOpen = !isMenuOpen;
+                navLinks.classList.toggle('active');
+                
+                // Update aria-expanded attribute for accessibility
+                mobileMenuButton.setAttribute('aria-expanded', isMenuOpen);
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (isMenuOpen && !mobileMenuButton.contains(e.target) && !navLinks.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                    isMenuOpen = false;
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isMenuOpen) {
+                    navLinks.classList.remove('active');
+                    isMenuOpen = false;
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        const muteBtn = document.getElementById('muteBtn');
+        let isMuted = false;
+
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            muteBtn.textContent = isMuted ? '🔇' : '🔊';
+            eatSound.muted = isMuted;
+            gameOverSound.muted = isMuted;
+        });
+
+        function playSound(sound) {
+            if (isMuted) return;
+            try {
+                sound.volume = 0.3;
+                sound.currentTime = 0;
+                sound.play().catch(error => console.log('Error playing sound:', error));
+            } catch (error) {
+                console.log('Error playing sound:', error);
+            }
+        }
+    </script>
+</body>
+</html>

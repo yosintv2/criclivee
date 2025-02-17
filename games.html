@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainPlay - Games Collection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/assets/images/favicon.svg" rel="icon">
+    <style>
+        :root {
+            --primary-color: #3B82F6;
+            --secondary-color: #10B981;
+            --text-color: #1F2937;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --header-bg: #FFFFFF;
+            --footer-bg: #1F2937;
+            --footer-text: #D1D5DB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: var(--header-bg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo-img {
+            height: 2.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .menu-toggle {
+            display: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .game {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .game h3 {
+            margin: 0.5rem 0;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        .game p {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 3rem 0 1rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--footer-text);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p,
+        .footer-section ul li {
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul a {
+            color: var(--footer-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+            }
+
+            .menu-toggle span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: var(--text-color);
+                margin: 5px 0;
+                transition: all 0.3s ease;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--header-bg);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 2rem;
+                transition: left 0.3s ease;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-link {
+                margin: 1rem 0;
+                font-size: 1.2rem;
+            }
+
+            .grid {
+                padding: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <img src="/assets/images/favicon.svg" alt="Logo" class="logo-img">
+                    <span>BrainPlay</span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/games.html" class="nav-link active">Games</a>
+                <a href="/about.html" class="nav-link">About</a>
+                <a href="/faq.html" class="nav-link">FAQ</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="game-grid" class="grid"></div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About BrainPlay</h3>
+                    <p>A collection of fun and engaging browser-based games to challenge your mind and improve cognitive skills.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/games.html">Games</a></li>
+                        <li><a href="/about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="/terms.html">Terms of Use</a></li>
+                        <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BrainPlay. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const games = [
+            {
+                id: 'memory',
+                title: 'Memory Match',
+                description: 'Test your memory by matching pairs of cards',
+                icon: '🎯'
+            },
+            {
+                id: 'snake-game',
+                title: 'Snake Game',
+                description: 'Classic snake game with a modern twist',
+                icon: '🐍'
+            },
+            {
+                id: 'tetris',
+                title: 'Tetris',
+                description: 'Arrange falling blocks to clear lines',
+                icon: '🧱'
+            },
+            {
+                id: 'puzzle',
+                title: 'Sliding Puzzle',
+                description: 'Rearrange tiles to complete the image',
+                icon: '🧩'
+            },
+            {
+                id: 'whack-a-mole',
+                title: 'Whack-a-Mole',
+                description: 'Test your reflexes by whacking moles',
+                icon: '🔨'
+            },
+            {
+                id: 'tic-tac-toe',
+                title: 'Tic-Tac-Toe',
+                description: 'Classic game of X\'s and O\'s',
+                icon: '❌⭕'
+            },
+            {
+                id: 'rock-paper-scissors',
+                title: 'Rock Paper Scissors',
+                description: 'Play against the computer in this classic game',
+                icon: '✊✋✌️'
+            },
+            {
+                id: 'simon-says',
+                title: 'Simon Says',
+                description: 'Test your memory by repeating color patterns',
+                icon: '🔴🟢🔵🟡'
+            },
+            {
+                id: 'hangman',
+                title: 'Hangman',
+                description: 'Guess the word before the man is hanged',
+                icon: '🔤'
+            },
+            {
+                id: 'minesweeper',
+                title: 'Minesweeper',
+                description: 'Clear the minefield without hitting any bombs',
+                icon: '💣'
+            },
+            {
+                id: 'math-quiz',
+                title: 'Math Quiz',
+                description: 'Test your math skills with quick calculations',
+                icon: '🧮'
+            },
+            {
+                id: 'word-scramble',
+                title: 'Word Scramble',
+                description: 'Unscramble words to test your vocabulary',
+                icon: '🔤'
+            }
+        ];
+
+        const gameGrid = document.getElementById('game-grid');
+        games.forEach(game => {
+            const gameElement = document.createElement('div');
+            gameElement.classList.add('game');
+            gameElement.innerHTML = `
+                <div>
+                    <div class="game-icon">${game.icon}</div>
+                    <h3>${game.title}</h3>
+                    <p>${game.description}</p>
+                </div>
+            `;
+            
+            gameElement.addEventListener('click', () => {
+                window.location.href = `/${game.id}.html`;
+            });
+            
+            gameGrid.appendChild(gameElement);
+        });
+
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

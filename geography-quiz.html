@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geography Quiz - The Money Focus</title>
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Modern CSS Variables */
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #ffffff;
+            --text-color: #2b2d42;
+            --accent-color: #48cae4;
+            --gradient-primary: linear-gradient(135deg, #4361ee 0%, #3f37c9 100%);
+            --gradient-secondary: linear-gradient(135deg, #48cae4 0%, #4361ee 100%);
+            --box-shadow: 0 10px 20px rgba(67, 97, 238, 0.15);
+            --border-radius: 12px;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        /* Reset & Global Styles */
+        body {
+            font-family: var(--font-family);
+            background: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modern Header Design */
+        header {
+            background: var(--gradient-primary);
+            padding: 12px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Styles */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 180px);
+            padding: 20px;
+        }
+
+        .game-section {
+            background: var(--secondary-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-secondary);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .description {
+            color: #64748b;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* Button Styles */
+        button {
+            background: var(--gradient-primary);
+            color: var(--secondary-color);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        /* Quiz Question Styles */
+        .question-container {
+            margin-top: 30px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 25px;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-label {
+            background: #f8fafc;
+            padding: 16px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option-label:hover {
+            background: #f1f5f9;
+            transform: translateX(5px);
+            border-color: var(--accent-color);
+        }
+
+        input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        /* Result Styles */
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+        }
+
+        .correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Modern Footer Design */
+        .footer {
+            background: #1e293b;
+            padding: 15px 0;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            padding: 0 15px;
+        }
+
+        .footer-section h3 {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-section p, 
+        .footer-section ul {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 5px;
+        }
+
+        .footer-section a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-section {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .footer-section {
+                padding: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="gamepad-icon">
+                        <line x1="6" y1="12" x2="18" y2="12"></line>
+                        <line x1="6" y1="12" x2="6" y2="12.01"></line>
+                        <line x1="18" y1="12" x2="18" y2="12.01"></line>
+                        <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12"></path>
+                    </svg>
+                    <span>The Money Focus</span>
+                </a>
+                <ul>
+                    <li><a href="games.html">Games</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="game-section">
+                <h1>Geography Quiz</h1>
+                <p>Test your knowledge of countries, capitals, and world geography.</p>
+                <button id="startQuiz" class="start-button">Start Quiz</button>
+                <div id="quiz-container" style="display: none;"></div>
+                <div id="score-container" style="display: none;"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About The Money Focus</h3>
+                    <p>A collection of fun and engaging browser-based games to challenge your mind.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/games.html">Games</a></li>
+                        <li><a href="/about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="/privacy.html">Privacy Policy</a></li>
+                        <li><a href="/terms.html">Terms of Use</a></li>
+                        <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 The Money Focus. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questions = [
+                // World Capitals
+                { question: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Madrid"], answer: "Paris" },
+                { question: "What is the capital of Japan?", options: ["Seoul", "Beijing", "Tokyo", "Bangkok"], answer: "Tokyo" },
+                { question: "What is the capital of Brazil?", options: ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"], answer: "Brasília" },
+                { question: "What is the capital of India?", options: ["Mumbai", "New Delhi", "Bangalore", "Kolkata"], answer: "New Delhi" },
+                { question: "What is the capital of Russia?", options: ["Moscow", "St. Petersburg", "Kiev", "Minsk"], answer: "Moscow" },
+
+                // Natural Features
+                { question: "Which is the largest desert in the world?", options: ["Gobi", "Sahara", "Antarctic", "Arabian"], answer: "Antarctic" },
+                { question: "What is the longest river in the world?", options: ["Amazon", "Nile", "Yangtze", "Mississippi"], answer: "Nile" },
+                { question: "Which is the highest waterfall in the world?", options: ["Niagara Falls", "Victoria Falls", "Angel Falls", "Iguazu Falls"], answer: "Angel Falls" },
+                { question: "What is the largest coral reef system?", options: ["Great Barrier Reef", "Red Sea Coral Reef", "New Caledonia Reef", "Mesoamerican Reef"], answer: "Great Barrier Reef" },
+                { question: "Which is the deepest lake in the world?", options: ["Lake Baikal", "Lake Superior", "Caspian Sea", "Lake Victoria"], answer: "Lake Baikal" },
+
+                // Mountains
+                { question: "What is the highest mountain in Africa?", options: ["Mount Kilimanjaro", "Mount Kenya", "Mount Stanley", "Mount Meru"], answer: "Mount Kilimanjaro" },
+                { question: "Which is the highest mountain in North America?", options: ["Mount McKinley", "Mount Logan", "Pico de Orizaba", "Mount Saint Elias"], answer: "Mount McKinley" },
+                { question: "What is the highest mountain in Europe?", options: ["Mont Blanc", "Mount Elbrus", "Matterhorn", "Monte Rosa"], answer: "Mount Elbrus" },
+                { question: "Which mountain range runs through South America?", options: ["Rocky Mountains", "Alps", "Andes", "Himalayas"], answer: "Andes" },
+                { question: "What is the highest mountain in Japan?", options: ["Mount Fuji", "Mount Tate", "Mount Haku", "Mount Kita"], answer: "Mount Fuji" },
+
+                // Countries and Regions
+                { question: "Which is the largest country by area?", options: ["China", "USA", "Canada", "Russia"], answer: "Russia" },
+                { question: "Which country has the most people?", options: ["India", "China", "USA", "Indonesia"], answer: "China" },
+                { question: "Which is the smallest continent?", options: ["Europe", "Antarctica", "Australia", "South America"], answer: "Australia" },
+                { question: "Which country is known as the Land of Fire and Ice?", options: ["Norway", "Iceland", "Greenland", "Finland"], answer: "Iceland" },
+                { question: "Which country is located at the southernmost tip of Africa?", options: ["Namibia", "Botswana", "South Africa", "Zimbabwe"], answer: "South Africa" },
+
+                // Oceans and Seas
+                { question: "What is the largest ocean?", options: ["Atlantic", "Indian", "Arctic", "Pacific"], answer: "Pacific" },
+                { question: "Which is the smallest ocean?", options: ["Arctic", "Indian", "Southern", "Atlantic"], answer: "Arctic" },
+                { question: "What is the saltiest sea in the world?", options: ["Dead Sea", "Red Sea", "Mediterranean Sea", "Black Sea"], answer: "Dead Sea" },
+                { question: "Which sea separates Europe from Africa?", options: ["Black Sea", "Mediterranean Sea", "Red Sea", "Arabian Sea"], answer: "Mediterranean Sea" },
+                { question: "Which ocean is the warmest?", options: ["Pacific", "Atlantic", "Indian", "Arctic"], answer: "Indian" },
+
+                // Islands
+                { question: "What is the largest island in the world?", options: ["Madagascar", "Greenland", "New Guinea", "Borneo"], answer: "Greenland" },
+                { question: "Which country has the most islands?", options: ["Indonesia", "Philippines", "Sweden", "Japan"], answer: "Sweden" },
+                { question: "What is the largest island in the Mediterranean Sea?", options: ["Sicily", "Sardinia", "Crete", "Cyprus"], answer: "Sicily" },
+                { question: "Which is the most populous island in the world?", options: ["Java", "Honshu", "Great Britain", "Madagascar"], answer: "Java" },
+                { question: "What is the largest island in the Caribbean?", options: ["Cuba", "Hispaniola", "Jamaica", "Puerto Rico"], answer: "Cuba" },
+
+                // Climate and Weather
+                { question: "Which city is known as the driest in the world?", options: ["Dubai", "Arica", "Lima", "Cairo"], answer: "Arica" },
+                { question: "Which country experiences midnight sun?", options: ["Norway", "Spain", "Greece", "Italy"], answer: "Norway" },
+                { question: "What is the coldest continent?", options: ["North America", "Asia", "Antarctica", "Europe"], answer: "Antarctica" },
+                { question: "Which city is known as the windiest in the world?", options: ["Chicago", "Wellington", "Boston", "Copenhagen"], answer: "Wellington" },
+                { question: "Which country has the highest average rainfall?", options: ["Brazil", "India", "Colombia", "Indonesia"], answer: "Colombia" },
+
+                // Population and Demographics
+                { question: "Which is the most populous city in the world?", options: ["Shanghai", "Tokyo", "Delhi", "Mexico City"], answer: "Tokyo" },
+                { question: "Which country has the youngest population?", options: ["Niger", "Uganda", "Mali", "Angola"], answer: "Niger" },
+                { question: "Which country has the highest life expectancy?", options: ["Japan", "Switzerland", "Singapore", "Monaco"], answer: "Monaco" },
+                { question: "Which is the most densely populated country?", options: ["Monaco", "Singapore", "Hong Kong", "Vatican City"], answer: "Monaco" },
+                { question: "Which continent has the most countries?", options: ["Asia", "Europe", "Africa", "North America"], answer: "Africa" },
+
+                // Famous Landmarks
+                { question: "In which city is the Taj Mahal located?", options: ["New Delhi", "Mumbai", "Agra", "Jaipur"], answer: "Agra" },
+                { question: "Which country is home to Machu Picchu?", options: ["Brazil", "Peru", "Colombia", "Chile"], answer: "Peru" },
+                { question: "Where is the Great Sphinx located?", options: ["Cairo", "Giza", "Luxor", "Alexandria"], answer: "Giza" },
+                { question: "In which city is the Colosseum located?", options: ["Venice", "Florence", "Milan", "Rome"], answer: "Rome" },
+                { question: "Which country has the Petra ruins?", options: ["Egypt", "Iraq", "Jordan", "Syria"], answer: "Jordan" },
+
+                // Time Zones
+                { question: "Which country has the most time zones?", options: ["Russia", "USA", "France", "China"], answer: "France" },
+                { question: "Which major city is known as GMT+0?", options: ["London", "Paris", "New York", "Tokyo"], answer: "London" },
+                { question: "How many time zones does Russia have?", options: ["8", "9", "11", "12"], answer: "11" },
+                { question: "Which country spans all 4 hemispheres?", options: ["USA", "Russia", "Brazil", "Kiribati"], answer: "Kiribati" },
+                { question: "Which continent has the most time zones?", options: ["Asia", "Africa", "North America", "Europe"], answer: "Asia" }
+            ];
+
+            // Randomize questions
+            questions.sort(() => Math.random() - 0.5);
+
+            const gameSection = document.querySelector('.game-section');
+            let currentQuestion = 0;
+            let score = 0;
+
+            // Show start screen
+            gameSection.innerHTML = `
+                <h1>Geography Quiz</h1>
+                <p>Test your knowledge with ${questions.length} questions about world geography!</p>
+                <button id="startQuiz" class="start-button">Start Quiz</button>
+                <div id="quiz-container" style="display: none;"></div>
+                <div id="score-container" style="display: none;"></div>
+            `;
+
+            document.getElementById('startQuiz').addEventListener('click', () => {
+                document.getElementById('startQuiz').style.display = 'none';
+                document.getElementById('quiz-container').style.display = 'block';
+                showQuestion();
+            });
+
+            function showQuestion() {
+                const quizContainer = document.getElementById('quiz-container');
+                const question = questions[currentQuestion];
+
+                quizContainer.innerHTML = `
+                    <div class="question-container">
+                        <h3>Question ${currentQuestion + 1} of ${questions.length}</h3>
+                        <p class="question-text">${question.question}</p>
+                        <div class="options-container">
+                            ${question.options.map(option => `
+                                <label class="option-label">
+                                    <input type="radio" name="question" value="${option}">
+                                    ${option}
+                                </label>
+                            `).join('')}
+                        </div>
+                        <button onclick="submitAnswer()" class="submit-btn">Submit Answer</button>
+                        <p class="result" id="result"></p>
+                    </div>
+                `;
+            }
+
+            window.submitAnswer = function() {
+                const selected = document.querySelector('input[name="question"]:checked');
+                const resultElement = document.getElementById('result');
+                
+                if (!selected) {
+                    resultElement.textContent = "Please select an answer!";
+                    resultElement.className = 'result incorrect';
+                    return;
+                }
+
+                if (selected.value === questions[currentQuestion].answer) {
+                    resultElement.textContent = "Correct!";
+                    resultElement.className = 'result correct';
+                    score++;
+                } else {
+                    resultElement.textContent = `Incorrect. The correct answer is ${questions[currentQuestion].answer}`;
+                    resultElement.className = 'result incorrect';
+                }
+
+                // Add next button after answering
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Next Question';
+                nextButton.className = 'next-btn';
+                nextButton.onclick = nextQuestion;
+                document.querySelector('.question-container').appendChild(nextButton);
+            };
+
+            function nextQuestion() {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    showFinalScore();
+                }
+            }
+
+            function showFinalScore() {
+                const quizContainer = document.getElementById('quiz-container');
+                quizContainer.innerHTML = `
+                    <div class="score-container">
+                        <h2>Quiz Complete!</h2>
+                        <p>Your score: ${score} out of ${questions.length}</p>
+                        <button onclick="location.reload()" class="restart-btn">Restart Quiz</button>
+                    </div>
+                `;
+            }
+
+            // Add additional styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .start-button {
+                    font-size: 1.2rem;
+                    padding: 15px 30px;
+                    margin: 20px auto;
+                    display: block;
+                }
+
+                .question-text {
+                    font-size: 1.2rem;
+                    margin-bottom: 20px;
+                    color: #333;
+                }
+
+                .option-label {
+                    display: block;
+                    margin: 10px 0;
+                    padding: 15px;
+                    background: #f8f9fa;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .option-label:hover {
+                    background: #e9ecef;
+                    transform: translateX(10px);
+                }
+
+                .submit-btn, .next-btn, .restart-btn {
+                    margin-top: 20px;
+                    margin-right: 10px;
+                }
+
+                .score-container {
+                    text-align: center;
+                    padding: 20px;
+                }
+
+                .result {
+                    margin-top: 15px;
+                    font-weight: bold;
+                }
+
+                .result.correct {
+                    color: #28a745;
+                }
+
+                .result.incorrect {
+                    color: #dc3545;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html> 

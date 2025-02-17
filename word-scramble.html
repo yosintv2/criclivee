@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Scramble - The Money Focus</title>
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <style>
+        :root {
+            --color-bg: #1e1b4b;
+            --color-text: #ffffff;
+            --color-text-muted: #a5b4fc;
+            --color-primary: #ec4899;
+            --color-secondary: #8b5cf6;
+            --color-accent: #06b6d4;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .game-container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        #scrambled-word {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        #guess {
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            width: 200px;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background-color: var(--color-primary);
+            color: var(--color-text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1.2rem;
+            margin: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--color-secondary);
+        }
+
+        #result {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        #score {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .back-home {
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            margin-top: 1rem;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-home:hover {
+            background-color: var(--color-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Word Scramble</h1>
+        <div id="scrambled-word" aria-live="polite"></div>
+        <input type="text" id="guess" aria-label="Enter your guess">
+        <button id="submit" aria-label="Submit guess">Submit</button>
+        <div id="result" aria-live="polite"></div>
+        <div id="score" aria-live="polite">Score: 0</div>
+        <button id="next" aria-label="Next word">Next Word</button>
+        <a href="index.html" class="back-home">Back to Home</a>
+    </div>
+
+    <script>
+        const words = ['javascript', 'python', 'html', 'css', 'react', 'vue', 'angular', 'nodejs', 'express', 'mongodb'];
+        const scrambledWordEl = document.getElementById('scrambled-word');
+        const guessEl = document.getElementById('guess');
+        const submitBtn = document.getElementById('submit');
+        const resultEl = document.getElementById('result');
+        const scoreEl = document.getElementById('score');
+        const nextBtn = document.getElementById('next');
+
+        let currentWord;
+        let score = 0;
+
+        function scrambleWord(word) {
+            return word.split('').sort(() => Math.random() - 0.5).join('');
+        }
+
+        function generateWord() {
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            scrambledWordEl.textContent = scrambleWord(currentWord);
+            guessEl.value = '';
+            resultEl.textContent = '';
+        }
+
+        function checkGuess() {
+            const userGuess = guessEl.value.toLowerCase();
+            if (userGuess === currentWord) {
+                resultEl.textContent = 'Correct!';
+                score++;
+            } else {
+                resultEl.textContent = `Incorrect. The word was ${currentWord}.`;
+            }
+            scoreEl.textContent = `Score: ${score}`;
+        }
+
+        submitBtn.addEventListener('click', checkGuess);
+        nextBtn.addEventListener('click', generateWord);
+
+        guessEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+
+        generateWord();
+    </script>
+</body>
+</html>
+

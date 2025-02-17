@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Defender - The Money Focus</title>
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #0B0B2B, #1A1A3A);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 0;
+            position: relative;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #4CAF50;
+            color: #000;
+        }
+
+        .game-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .game-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .game-area {
+            width: 100%;
+            height: 500px;
+            background: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080') center/cover;
+            position: relative;
+            border: 3px solid #4CAF50;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .spaceship {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234CAF50"><path d="M12 2L2 22h20L12 2z"/></svg>') no-repeat center/contain;
+            transition: left 0.1s ease;
+        }
+
+        .laser {
+            position: absolute;
+            width: 4px;
+            height: 15px;
+            background: #ff0;
+            border-radius: 2px;
+        }
+
+        .enemy {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #f00;
+            border-radius: 50%;
+        }
+
+        .score-board {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+        .instructions {
+            margin: 20px 0;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .footer {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px 0;
+    color: #fff;
+    text-align: center;
+    border-top: 2px solid #4CAF50;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+}
+
+.footer-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+.footer-section p, .footer-section ul {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #4CAF50;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    font-size: 14px;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-container">
+            <a href="index.html" class="logo">Galaxy Defender</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="games.html">Games</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="game-container">
+        <h1 class="game-title">Galaxy Defender</h1>
+        <div class="game-area">
+            <div class="score-board">Score: <span id="score">0</span></div>
+        </div>
+
+        <div class="instructions">
+            <p>How to Play:</p>
+            <ul>
+                <li>Use left and right arrow keys to move the spaceship</li>
+                <li>Press spacebar to shoot lasers</li>
+                <li>Destroy enemies to gain points</li>
+                <li>Avoid letting enemies pass through</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Galaxy Defender</h3>
+                    <p>A collection of fun and engaging browser-based games to challenge your mind.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/games.html">Games</a></li>
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="/terms.html">Terms of Use</a></li>
+                        <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                        <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Galaxy Defender. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameArea = document.querySelector('.game-area');
+            const scoreElement = document.getElementById('score');
+            let score = 0;
+
+            // Create spaceship
+            const spaceship = document.createElement('div');
+            spaceship.className = 'spaceship';
+            gameArea.appendChild(spaceship);
+
+            // Game state
+            let spaceshipX = 50;
+            let gameLoop;
+            let lasers = [];
+            let enemies = [];
+            let isGameRunning = true;
+
+            // Movement controls
+            document.addEventListener('keydown', (e) => {
+                if (!isGameRunning) return;
+
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        spaceshipX = Math.max(0, spaceshipX - 3);
+                        spaceship.style.left = spaceshipX + '%';
+                        break;
+                    case 'ArrowRight':
+                        spaceshipX = Math.min(95, spaceshipX + 3);
+                        spaceship.style.left = spaceshipX + '%';
+                        break;
+                    case ' ': // Spacebar
+                        shootLaser();
+                        break;
+                }
+            });
+
+            function shootLaser() {
+                const laser = document.createElement('div');
+                laser.className = 'laser';
+                laser.style.left = (spaceship.offsetLeft + spaceship.offsetWidth / 2 - 2) + 'px';
+                laser.style.bottom = '70px';
+                gameArea.appendChild(laser);
+                lasers.push(laser);
+            }
+
+            function createEnemy() {
+                if (!isGameRunning) return;
+                
+                const enemy = document.createElement('div');
+                enemy.className = 'enemy';
+                enemy.style.left = Math.random() * (gameArea.offsetWidth - 30) + 'px';
+                enemy.style.top = '0px';
+                gameArea.appendChild(enemy);
+                enemies.push(enemy);
+            }
+
+            function updateGame() {
+                if (!isGameRunning) return;
+
+                // Update lasers
+                lasers.forEach((laser, laserIndex) => {
+                    const currentBottom = parseFloat(laser.style.bottom);
+                    if (currentBottom > gameArea.offsetHeight) {
+                        laser.remove();
+                        lasers.splice(laserIndex, 1);
+                    } else {
+                        laser.style.bottom = (currentBottom + 5) + 'px';
+                    }
+                });
+
+                // Update enemies
+                enemies.forEach((enemy, enemyIndex) => {
+                    const currentTop = parseFloat(enemy.style.top) || 0;
+                    if (currentTop > gameArea.offsetHeight) {
+                        enemy.remove();
+                        enemies.splice(enemyIndex, 1);
+                        score -= 10;
+                        scoreElement.textContent = score;
+                    } else {
+                        enemy.style.top = (currentTop + 2) + 'px';
+                    }
+
+                    // Check collision with lasers
+                    lasers.forEach((laser, laserIndex) => {
+                        if (checkCollision(laser, enemy)) {
+                            laser.remove();
+                            enemy.remove();
+                            lasers.splice(laserIndex, 1);
+                            enemies.splice(enemyIndex, 1);
+                            score += 20;
+                            scoreElement.textContent = score;
+                        }
+                    });
+                });
+            }
+
+            function checkCollision(element1, element2) {
+                const rect1 = element1.getBoundingClientRect();
+                const rect2 = element2.getBoundingClientRect();
+                return !(rect1.right < rect2.left || 
+                        rect1.left > rect2.right || 
+                        rect1.bottom < rect2.top || 
+                        rect1.top > rect2.bottom);
+            }
+
+            // Start game loops
+            setInterval(createEnemy, 2000);
+            gameLoop = setInterval(updateGame, 1000/60);
+        });
+    </script>
+</body>
+</html>

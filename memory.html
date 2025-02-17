@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match - The Money Focus</title>
+    <meta name="description" content="Test your memory by matching pairs of cards in this fun browser game!">
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --color-primary: #9d0000;
+            --color-secondary: #10b981;
+            --color-background: #f3f4f6;
+            --color-text: #1f2937;
+            --color-card: #ffffff;
+            --color-card-back: #4f46e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+
+        header h1 {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--color-primary);
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            perspective: 1000px;
+        }
+
+        .card {
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-front {
+            background-color: var(--color-card);
+            transform: rotateY(180deg);
+        }
+
+        .card-back {
+            background-color: var(--color-card-back);
+            color: white;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        #score {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        button {
+            background-color: var(--color-secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0d9488;
+        }
+
+        footer {
+            background-color: var(--color-primary);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .memory-game {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .card {
+                height: 80px;
+            }
+
+            .card-face {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .memory-game {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .card {
+                height: 70px;
+            }
+
+            .card-face {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .memory-game {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card {
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1>The Money Focus</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/games.html">Games</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Memory Match</h1>
+            <div id="memory-game" class="memory-game">
+                <!-- Game board will be generated by JavaScript -->
+            </div>
+            <div class="game-info">
+                <p>Score: <span id="score">0</span></p>
+                <button id="reset-game">Reset Game</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 The Money Focus. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/terms.html">Terms of Service</a>
+            <a href="/cookie-policy.html">Cookie Policy</a>
+            <a href="/disclaimer.html">Disclaimer</a>
+        </div>
+    </footer>
+
+    <script>
+        const gameBoard = document.getElementById('memory-game');
+        const scoreElement = document.getElementById('score');
+        const resetButton = document.getElementById('reset-game');
+        const emojis = ['🎮', '🎲', '🎯', '🎨', '🎭', '🎪', '🎢', '🎡'];
+        const allEmojis = [...emojis, ...emojis];
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let score = 0;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createCard(emoji, index) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.index = index;
+            card.dataset.emoji = emoji;
+            card.innerHTML = `
+                <div class="card-face card-front">${emoji}</div>
+                <div class="card-face card-back">?</div>
+            `;
+            card.addEventListener('click', flipCard);
+            return card;
+        }
+
+        function flipCard() {
+            if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                this.classList.add('flipped');
+                flippedCards.push(this);
+
+                if (flippedCards.length === 2) {
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.emoji === card2.dataset.emoji) {
+                score += 1;
+                scoreElement.textContent = score;
+                matchedPairs += 1;
+            } else {
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+            }
+            flippedCards = [];
+
+            if (matchedPairs === emojis.length) {
+                setTimeout(() => {
+                    alert('Congratulations! You won!');
+                }, 500);
+            }
+        }
+
+        function initGame() {
+            gameBoard.innerHTML = '';
+            cards = shuffleArray(allEmojis).map(createCard);
+            cards.forEach(card => gameBoard.appendChild(card));
+            matchedPairs = 0;
+            score = 0;
+            scoreElement.textContent = score;
+        }
+
+        resetButton.addEventListener('click', initGame);
+
+        initGame();
+    </script>
+</body>
+</html>

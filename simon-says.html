@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Says - The Money Focus</title>
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <style>
+        :root {
+            --color-bg: #1e1b4b;
+            --color-text: #ffffff;
+            --color-text-muted: #a5b4fc;
+            --color-primary: #ec4899;
+            --color-secondary: #8b5cf6;
+            --color-accent: #06b6d4;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .simon-board {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .simon-button {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .simon-button.lit {
+            opacity: 1;
+        }
+
+        #green { background-color: #4ade80; }
+        #red { background-color: #f87171; }
+        #yellow { background-color: #fbbf24; }
+        #blue { background-color: #60a5fa; }
+
+        .game-info {
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--color-primary);
+            color: var(--color-text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--color-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Simon Says</h1>
+        <div class="simon-board">
+            <div class="simon-button" id="green"></div>
+            <div class="simon-button" id="red"></div>
+            <div class="simon-button" id="yellow"></div>
+            <div class="simon-button" id="blue"></div>
+        </div>
+        <div class="game-info">
+            <p>Score: <span id="score">0</span></p>
+            <button id="start-game">Start Game</button>
+        </div>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.simon-button');
+        const startButton = document.getElementById('start-game');
+        const scoreDisplay = document.getElementById('score');
+
+        let sequence = [];
+        let playerSequence = [];
+        let level = 0;
+
+        startButton.addEventListener('click', startGame);
+
+        function startGame() {
+            sequence = [];
+            playerSequence = [];
+            level = 0;
+            nextRound();
+        }
+
+        function nextRound() {
+            level++;
+            playerSequence = [];
+            scoreDisplay.textContent = level - 1;
+            addToSequence();
+            playSequence();
+        }
+
+        function addToSequence() {
+            const colors = ['green', 'red', 'yellow', 'blue'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            sequence.push(randomColor);
+        }
+
+        function playSequence() {
+            disableButtons();
+            let i = 0;
+            const intervalId = setInterval(() => {
+                const button = document.getElementById(sequence[i]);
+                flashButton(button);
+                i++;
+                if (i >= sequence.length) {
+                    clearInterval(intervalId);
+                    enableButtons();
+                }
+            }, 1000);
+        }
+
+        function flashButton(button) {
+            button.classList.add('lit');
+            setTimeout(() => {
+                button.classList.remove('lit');
+            }, 500);
+        }
+
+        function disableButtons() {
+            buttons.forEach(button => button.style.pointerEvents = 'none');
+        }
+
+        function enableButtons() {
+            buttons.forEach(button => button.style.pointerEvents = 'auto');
+        }
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const color = button.id;
+                playerSequence.push(color);
+                flashButton(button);
+                checkPlayerInput();
+            });
+        });
+
+        function checkPlayerInput() {
+            const currentColor = playerSequence[playerSequence.length - 1];
+            const expectedColor = sequence[playerSequence.length - 1];
+
+            if (currentColor !== expectedColor) {
+                alert(`Game Over! Your score: ${level - 1}`);
+                startButton.style.display = 'inline-block';
+                disableButtons();
+                return;
+            }
+
+            if (playerSequence.length === sequence.length) {
+                if (playerSequence.length === 20) {
+                    alert('Congratulations! You won the game!');
+                    startButton.style.display = 'inline-block';
+                    disableButtons();
+                } else {
+                    setTimeout(nextRound, 1000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play the classic 15 Sliding Puzzle game - Challenge yourself with this free online puzzle game at The Money Focus">
+    <meta name="keywords" content="sliding puzzle, 15 puzzle, number puzzle, brain games, free online games">
+    <title>Sliding Puzzle - The Money Focus</title>
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <style>
+        :root {
+            --color-primary: #3b82f6;
+            --color-secondary: #8b5cf6;
+            --color-accent: #06b6d4;
+            --color-background: #1e1b4b;
+            --color-text: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .game-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin: 2rem auto;
+            width: min(90vw, 400px);
+            height: min(90vw, 400px);
+            background: #2d2b5a;
+            padding: 5px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .tile {
+            background: var(--color-primary);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tile:not(.empty):hover {
+            transform: scale(0.98);
+            background: var(--color-secondary);
+        }
+
+        .empty {
+            background: transparent;
+            cursor: default;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        button {
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--color-secondary);
+        }
+
+        .game-info {
+            margin: 1rem 0;
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .win-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-primary);
+            padding: 2rem;
+            border-radius: 10px;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .tile {
+                font-size: 1.2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        /* Social Share Buttons */
+        .social-share {
+            max-width: 600px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .share-button {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .share-button:hover {
+            opacity: 0.9;
+        }
+
+        .facebook {
+            background-color: #1877f2;
+        }
+
+        .twitter {
+            background-color: #1da1f2;
+        }
+
+        .whatsapp {
+            background-color: #25d366;
+        }
+
+        /* Ad Container */
+        .ad-container {
+            max-width: 1200px;
+            margin: 1rem auto;
+            text-align: center;
+            min-height: 90px;
+        }
+
+        @media (max-width: 768px) {
+            .share-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .share-button {
+                width: 100%;
+                max-width: 200px;
+                text-align: center;
+            }
+        }
+
+        /* Header Styles */
+        .site-header {
+            background-color: #1f2937;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text);
+        }
+
+        .logo-text {
+            margin-left: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--color-text);
+            margin: 5px 0;
+            transition: transform 0.3s ease;
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            background-color: #1f2937;
+            color: var(--color-text);
+            padding: 3rem 1rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .footer-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--color-text);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--color-primary);
+            color: var(--color-text);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #1f2937;
+                padding: 1rem;
+                flex-direction: column;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .mobile-menu[aria-expanded="true"] span:first-child {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .mobile-menu[aria-expanded="true"] span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu[aria-expanded="true"] span:last-child {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .social-links {
+                flex-direction: column;
+            }
+        }
+
+        /* Additional Utility Classes */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* Footer Links and Social Media Styles */
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-text);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--color-primary);
+            color: var(--color-text);
+            transform: translateY(-2px);
+        }
+
+        .social-links i {
+            font-size: 1.2rem;
+        }
+
+        /* Footer Responsive Styles */
+        @media (max-width: 768px) {
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social-links a {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-bottom {
+                text-align: center;
+                padding: 1rem;
+            }
+
+            .footer-bottom p {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Footer Section Spacing */
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+        .footer-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-section p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Copyright Section */
+        .footer-bottom {
+            border-top: 1px solid rgba(156, 163, 175, 0.2);
+            margin-top: 2rem;
+            padding-top: 2rem;
+        }
+
+        /* Hover Effects */
+        .footer-section a:hover {
+            color: var(--color-text);
+            text-decoration: none;
+        }
+
+        .social-links a:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Mobile Menu Enhanced Styles */
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            color: var(--color-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .nav-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-social-links {
+            display: none;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-section {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-section ul {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-section a {
+                display: block;
+                padding: 0.5rem;
+                font-size: 1.1rem;
+            }
+
+            .mobile-only {
+                display: block;
+            }
+
+            .mobile-social-links {
+                display: flex;
+                justify-content: center;
+                gap: 1.5rem;
+                margin-top: 1rem;
+            }
+
+            .mobile-social-links a {
+                color: var(--color-text);
+                font-size: 1.5rem;
+                padding: 0.5rem;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-social-links a:hover {
+                background: var(--color-primary);
+                transform: translateY(-2px);
+            }
+
+            .nav-links {
+                padding: 2rem;
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-section h3 {
+                margin: 1rem 0 0.5rem;
+            }
+        }
+
+        /* Desktop Navigation */
+        @media (min-width: 769px) {
+            .nav-section h3 {
+                display: none;
+            }
+
+            .nav-section {
+                margin: 0;
+            }
+
+            .nav-section ul {
+                display: flex;
+                gap: 2rem;
+            }
+
+            .nav-section:not(:first-child) {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="/" class="logo-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="30" height="30">
+                        <circle cx="32" cy="32" r="30" fill="#3b82f6" stroke="#1f2937" stroke-width="2"/>
+                        <path d="M32 12c-11 0-20 9-20 20s9 20 20 20 20-9 20-20-9-20-20-20zm0 36c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16z" fill="#10b981"/>
+                    </svg>
+                    <span class="logo-text">The Money Focus</span>
+                </a>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <!-- Main Navigation -->
+                <li class="nav-section">
+                    <h3>Main Menu</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about.html">About Us</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                        
+                    </ul>
+                </li>
+                
+               
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="game-container">
+        <h1>Sliding Puzzle</h1>
+        <div class="game-info">
+            <div>Moves: <span id="moves">0</span></div>
+            <div>Time: <span id="time">00:00</span></div>
+        </div>
+        <div class="puzzle-board" id="puzzle-board"></div>
+        <div class="controls">
+            <button id="new-game">New Game</button>
+            <button id="shuffle">Shuffle</button>
+        </div>
+        <div class="win-message" id="win-message">
+            <h2>Congratulations!</h2>
+            <p>You solved the puzzle in <span id="final-moves">0</span> moves!</p>
+            <p>Time: <span id="final-time">00:00</span></p>
+            <button id="play-again">Play Again</button>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>The Money Focus provides free online games and financial education resources to help you learn while having fun. Our mission is to make learning engaging and accessible to everyone.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/games.html">Games</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Popular Games</h3>
+                <ul>
+                    <li><a href="puzzle.html">Sliding Puzzle</a></li>
+                    <li><a href="tetris.html">Tetris</a></li>
+                    <li><a href="snake.html">Snake Game</a></li>
+                    <li><a href="memory.html">Memory Game</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Money Focus. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="/terms.html">Terms of Use</a>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/cookie-policy.html">Cookie Policy</a>
+                <a href="/disclaimer.html">Disclaimer</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Font Awesome for social icons -->
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+
+    <script>
+        class SlidingPuzzle {
+            constructor() {
+                this.board = Array.from({length: 16}, (_, i) => i);
+                this.emptyIndex = 15;
+                this.moves = 0;
+                this.startTime = null;
+                this.timerInterval = null;
+                this.isPlaying = false;
+
+                this.boardElement = document.getElementById('puzzle-board');
+                this.movesElement = document.getElementById('moves');
+                this.timeElement = document.getElementById('time');
+                this.winMessage = document.getElementById('win-message');
+
+                this.initializeBoard();
+                this.addEventListeners();
+
+                // Initialize the game immediately
+                this.shuffle();
+                this.newGame();
+            }
+
+            initializeBoard() {
+                this.boardElement.innerHTML = '';
+                this.board.forEach((num, index) => {
+                    const tile = document.createElement('button');
+                    tile.className = `tile ${num === 15 ? 'empty' : ''}`;
+                    tile.dataset.index = index;
+                    if (num !== 15) {
+                        tile.textContent = num + 1;
+                    }
+                    this.boardElement.appendChild(tile);
+                });
+            }
+
+            addEventListeners() {
+                this.boardElement.addEventListener('click', (e) => {
+                    if (!this.isPlaying) return;
+                    const tile = e.target.closest('.tile');
+                    if (!tile || tile.classList.contains('empty')) return;
+                    
+                    const index = parseInt(tile.dataset.index);
+                    if (this.isValidMove(index)) {
+                        this.moveTile(index);
+                        this.moves++;
+                        this.movesElement.textContent = this.moves;
+                        
+                        if (this.checkWin()) {
+                            this.gameWon();
+                        }
+                    }
+                });
+
+                document.getElementById('new-game').addEventListener('click', () => this.newGame());
+                document.getElementById('shuffle').addEventListener('click', () => this.shuffle());
+                document.getElementById('play-again').addEventListener('click', () => {
+                    this.winMessage.style.display = 'none';
+                    this.newGame();
+                });
+
+                // Add touch support
+                let touchStartX, touchStartY;
+                
+                this.boardElement.addEventListener('touchstart', (e) => {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }, false);
+
+                this.boardElement.addEventListener('touchend', (e) => {
+                    if (!this.isPlaying) return;
+                    
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    const diffX = touchEndX - touchStartX;
+                    const diffY = touchEndY - touchStartY;
+                    
+                    // Determine swipe direction
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        // Horizontal swipe
+                        if (Math.abs(diffX) > 30) { // Minimum swipe distance
+                            const direction = diffX > 0 ? 1 : -1;
+                            const newIndex = this.emptyIndex + direction;
+                            if (this.isValidMove(newIndex)) {
+                                this.moveTile(newIndex);
+                                this.moves++;
+                                this.movesElement.textContent = this.moves;
+                                if (this.checkWin()) this.gameWon();
+                            }
+                        }
+                    } else {
+                        // Vertical swipe
+                        if (Math.abs(diffY) > 30) {
+                            const direction = diffY > 0 ? 4 : -4;
+                            const newIndex = this.emptyIndex + direction;
+                            if (this.isValidMove(newIndex)) {
+                                this.moveTile(newIndex);
+                                this.moves++;
+                                this.movesElement.textContent = this.moves;
+                                if (this.checkWin()) this.gameWon();
+                            }
+                        }
+                    }
+                }, false);
+            }
+
+            isValidMove(index) {
+                if (index < 0 || index >= 16) return false;
+                
+                const row = Math.floor(index / 4);
+                const col = index % 4;
+                const emptyRow = Math.floor(this.emptyIndex / 4);
+                const emptyCol = this.emptyIndex % 4;
+
+                // Check if the move is valid (adjacent to empty space)
+                return (
+                    (Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
+                    (Math.abs(col - emptyCol) === 1 && row === emptyRow)
+                );
+            }
+
+            moveTile(index) {
+                [this.board[index], this.board[this.emptyIndex]] = 
+                [this.board[this.emptyIndex], this.board[index]];
+                this.emptyIndex = index;
+                this.initializeBoard();
+            }
+
+            shuffle() {
+                let validMoves = [];
+                for (let i = 0; i < 1000; i++) {
+                    validMoves = [];
+                    [-4, 4, -1, 1].forEach(offset => {
+                        const newIndex = this.emptyIndex + offset;
+                        // Check if move is valid
+                        if (this.isValidMove(newIndex)) {
+                            validMoves.push(newIndex);
+                        }
+                    });
+                    if (validMoves.length > 0) {
+                        const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+                        this.moveTile(randomMove);
+                    }
+                }
+            }
+
+            newGame() {
+                this.moves = 0;
+                this.movesElement.textContent = '0';
+                this.isPlaying = true;
+                this.startTimer();
+            }
+
+            startTimer() {
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                this.startTime = Date.now();
+                this.timerInterval = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                    const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                    const seconds = (elapsed % 60).toString().padStart(2, '0');
+                    this.timeElement.textContent = `${minutes}:${seconds}`;
+                }, 1000);
+            }
+
+            checkWin() {
+                return this.board.every((num, index) => num === index);
+            }
+
+            gameWon() {
+                clearInterval(this.timerInterval);
+                this.isPlaying = false;
+                document.getElementById('final-moves').textContent = this.moves;
+                document.getElementById('final-time').textContent = this.timeElement.textContent;
+                this.winMessage.style.display = 'block';
+            }
+        }
+
+        // Initialize the game
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlidingPuzzle();
+        });
+
+        // Mobile Menu JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            const body = document.body;
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                mobileMenuButton.setAttribute('aria-expanded', isMenuOpen);
+                navLinks.classList.toggle('active');
+                body.classList.toggle('menu-open');
+            }
+
+            function closeMenu() {
+                isMenuOpen = false;
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                navLinks.classList.remove('active');
+                body.classList.remove('menu-open');
+            }
+
+            // Toggle menu on button click
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // Close menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (isMenuOpen && !mobileMenuButton.contains(e.target) && !navLinks.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+
+            // Close menu on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isMenuOpen) {
+                    closeMenu();
+                }
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (window.innerWidth > 768 && isMenuOpen) {
+                        closeMenu();
+                    }
+                }, 250);
+            });
+        });
+    </script>
+</body>
+</html>

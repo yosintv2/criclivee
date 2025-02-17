@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Match - The Money Focus</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="gamepad-icon">
+                        <line x1="6" y1="12" x2="18" y2="12"></line>
+                        <line x1="6" y1="12" x2="6" y2="12.01"></line>
+                        <line x1="18" y1="12" x2="18" y2="12.01"></line>
+                        <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12"></path>
+                    </svg>
+                    <span>The Money Focus</span>
+                </a>
+                <ul>
+                    <li><a href="games.html">Games</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="game-section">
+                <h1>Color Match</h1>
+                <p>Match and blend colors to solve challenging puzzle combinations.</p>
+                <!-- Game implementation goes here -->
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Copy the same footer from index.html -->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
+            const targetColor = colors[Math.floor(Math.random() * colors.length)];
+
+            const gameContainer = document.createElement('div');
+            gameContainer.style.display = 'flex';
+            gameContainer.style.justifyContent = 'center';
+            gameContainer.style.alignItems = 'center';
+            gameContainer.style.height = '200px';
+            document.querySelector('.game-section').appendChild(gameContainer);
+
+            const target = document.createElement('div');
+            target.style.width = '100px';
+            target.style.height = '100px';
+            target.style.background = targetColor;
+            target.style.marginRight = '20px';
+            gameContainer.appendChild(target);
+
+            const message = document.createElement('div');
+            message.textContent = 'Match the color!';
+            message.style.marginBottom = '1rem';
+            document.querySelector('.game-section').insertBefore(message, gameContainer);
+
+            colors.forEach(color => {
+                const colorOption = document.createElement('div');
+                colorOption.style.width = '50px';
+                colorOption.style.height = '50px';
+                colorOption.style.background = color;
+                colorOption.style.margin = '0 10px';
+                colorOption.style.cursor = 'pointer';
+                gameContainer.appendChild(colorOption);
+
+                colorOption.addEventListener('click', () => {
+                    if (color === targetColor) {
+                        message.textContent = 'Correct!';
+                        message.style.color = 'green';
+                    } else {
+                        message.textContent = 'Try again!';
+                        message.style.color = 'red';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

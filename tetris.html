@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play Tetris on The Money Focus - A free, classic puzzle game to challenge your mind and have fun!">
+    <title>Tetris - The Money Focus</title>
+    <link rel="icon" href="\assets\images\favicon.svg" type="image/x-icon">
+    <style>
+        :root {
+            --color-bg: #1e1b4b;
+            --color-text: #ffffff;
+            --color-primary: #ec4899;
+            --color-secondary: #8b5cf6;
+            --color-accent: #06b6d4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        #game-board {
+            width: 300px;
+            height: 600px;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(20, 1fr);
+            gap: 1px;
+            border: 2px solid var(--color-accent);
+        }
+
+        .cell {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tetromino {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .game-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: var(--color-primary);
+            color: var(--color-text);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: var(--color-secondary);
+        }
+
+        @media (max-width: 768px) {
+            #game-board {
+                width: 240px;
+                height: 480px;
+            }
+        }
+
+        /* Header Styles */
+        .site-header {
+            background-color: #1f2937;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text);
+        }
+
+        .logo-text {
+            margin-left: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            background-color: #1f2937;
+            color: #fff;
+            padding: 3rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #1f2937;
+                padding: 1rem;
+                z-index: 1000;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="/" class="logo-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="30" height="30">
+                        <circle cx="32" cy="32" r="30" fill="#3b82f6" stroke="#1f2937" stroke-width="2"/>
+                        <path d="M32 12c-11 0-20 9-20 20s9 20 20 20 20-9 20-20-9-20-20-20zm0 36c-8.8 0-16-7.2-16-16s7.2-16 16-16 16 7.2 16 16-7.2 16-16 16z" fill="#10b981"/>
+                        <circle cx="24" cy="28" r="2" fill="#fff"/>
+                        <circle cx="40" cy="28" r="2" fill="#fff"/>
+                        <path d="M32 36c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z" fill="#ef4444"/>
+                    </svg>
+                    <span class="logo-text">The Money Focus</span>
+                </a>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/games.html">Games</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/privacy.html">Privacy Policy</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+
+    <div class="game-container">
+        <div id="game-board"></div>
+        <div class="game-info">
+            <p>Score: <span id="score">0</span></p>
+            <button id="start-btn">Start Game</button>
+        </div>
+        <div class="controls">
+            <button id="left-btn">←</button>
+            <button id="rotate-btn">↻</button>
+            <button id="right-btn">→</button>
+            <button id="down-btn">↓</button>
+        </div>
+    </div>
+
+    <script>
+        // Game constants and variables
+        const BOARD_WIDTH = 10;
+        const BOARD_HEIGHT = 20;
+        const board = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0));
+        
+        // Tetromino shapes
+        const SHAPES = [
+            [[1, 1, 1, 1]], // I
+            [[1, 1], [1, 1]], // O
+            [[1, 1, 1], [0, 1, 0]], // T
+            [[1, 1, 1], [1, 0, 0]], // L
+            [[1, 1, 1], [0, 0, 1]], // J
+            [[1, 1, 0], [0, 1, 1]], // S
+            [[0, 1, 1], [1, 1, 0]]  // Z
+        ];
+
+        const COLORS = [
+            '#ec4899', // pink
+            '#8b5cf6', // purple
+            '#06b6d4', // cyan
+            '#10b981', // green
+            '#f59e0b', // yellow
+            '#ef4444', // red
+            '#6366f1'  // indigo
+        ];
+
+        let currentPiece = null;
+        let currentPiecePosition = { x: 0, y: 0 };
+        let score = 0;
+        let gameInterval = null;
+        let isGameOver = false;
+
+        // Game elements
+        const gameBoard = document.getElementById('game-board');
+        const scoreElement = document.getElementById('score');
+        const startBtn = document.getElementById('start-btn');
+        const leftBtn = document.getElementById('left-btn');
+        const rightBtn = document.getElementById('right-btn');
+        const downBtn = document.getElementById('down-btn');
+        const rotateBtn = document.getElementById('rotate-btn');
+
+        // Initialize the game board
+        function initBoard() {
+            gameBoard.innerHTML = '';
+            for (let y = 0; y < BOARD_HEIGHT; y++) {
+                for (let x = 0; x < BOARD_WIDTH; x++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    gameBoard.appendChild(cell);
+                }
+            }
+        }
+
+        // Create new piece
+        function createNewPiece() {
+            const shapeIndex = Math.floor(Math.random() * SHAPES.length);
+            currentPiece = {
+                shape: SHAPES[shapeIndex],
+                color: COLORS[shapeIndex]
+            };
+            currentPiecePosition = {
+                x: Math.floor((BOARD_WIDTH - currentPiece.shape[0].length) / 2),
+                y: 0
+            };
+            if (!canMove(currentPiecePosition.x, currentPiecePosition.y)) {
+                gameOver();
+            }
+        }
+
+        // Check if piece can move to new position
+        function canMove(newX, newY, shape = currentPiece.shape) {
+            for (let y = 0; y < shape.length; y++) {
+                for (let x = 0; x < shape[y].length; x++) {
+                    if (shape[y][x]) {
+                        const boardX = newX + x;
+                        const boardY = newY + y;
+                        if (boardX < 0 || boardX >= BOARD_WIDTH || 
+                            boardY >= BOARD_HEIGHT ||
+                            (boardY >= 0 && board[boardY][boardX])) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        // Draw the current piece
+        function drawPiece() {
+            const cells = gameBoard.children;
+            for (let y = 0; y < currentPiece.shape.length; y++) {
+                for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                    if (currentPiece.shape[y][x]) {
+                        const boardX = currentPiecePosition.x + x;
+                        const boardY = currentPiecePosition.y + y;
+                        if (boardY >= 0) {
+                            const index = boardY * BOARD_WIDTH + boardX;
+                            cells[index].style.backgroundColor = currentPiece.color;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Update the game board display
+        function updateBoard() {
+            const cells = gameBoard.children;
+            for (let y = 0; y < BOARD_HEIGHT; y++) {
+                for (let x = 0; x < BOARD_WIDTH; x++) {
+                    const index = y * BOARD_WIDTH + x;
+                    cells[index].style.backgroundColor = 
+                        board[y][x] ? COLORS[board[y][x] - 1] : 'rgba(255, 255, 255, 0.1)';
+                }
+            }
+            if (currentPiece) {
+                drawPiece();
+            }
+        }
+
+        // Move piece down
+        function moveDown() {
+            if (!currentPiece) return;
+            if (canMove(currentPiecePosition.x, currentPiecePosition.y + 1)) {
+                currentPiecePosition.y++;
+                updateBoard();
+            } else {
+                lockPiece();
+                clearLines();
+                createNewPiece();
+                updateBoard();
+            }
+        }
+
+        // Lock the current piece in place
+        function lockPiece() {
+            for (let y = 0; y < currentPiece.shape.length; y++) {
+                for (let x = 0; x < currentPiece.shape[y].length; x++) {
+                    if (currentPiece.shape[y][x]) {
+                        const boardY = currentPiecePosition.y + y;
+                        if (boardY >= 0) {
+                            board[boardY][currentPiecePosition.x + x] = 
+                                SHAPES.indexOf(currentPiece.shape) + 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Clear completed lines
+        function clearLines() {
+            for (let y = BOARD_HEIGHT - 1; y >= 0; y--) {
+                if (board[y].every(cell => cell !== 0)) {
+                    board.splice(y, 1);
+                    board.unshift(Array(BOARD_WIDTH).fill(0));
+                    score += 100;
+                    scoreElement.textContent = score;
+                }
+            }
+        }
+
+        // Game over
+        function gameOver() {
+            isGameOver = true;
+            clearInterval(gameInterval);
+            alert(`Game Over! Score: ${score}`);
+            startBtn.textContent = 'Start Game';
+        }
+
+        // Start game
+        function startGame() {
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                gameInterval = null;
+                startBtn.textContent = 'Start Game';
+                return;
+            }
+
+            // Reset game state
+            board.forEach(row => row.fill(0));
+            score = 0;
+            scoreElement.textContent = score;
+            isGameOver = false;
+            
+            createNewPiece();
+            updateBoard();
+            
+            gameInterval = setInterval(moveDown, 1000);
+            startBtn.textContent = 'Pause';
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startGame);
+        
+        leftBtn.addEventListener('click', () => {
+            if (currentPiece && canMove(currentPiecePosition.x - 1, currentPiecePosition.y)) {
+                currentPiecePosition.x--;
+                updateBoard();
+            }
+        });
+
+        rightBtn.addEventListener('click', () => {
+            if (currentPiece && canMove(currentPiecePosition.x + 1, currentPiecePosition.y)) {
+                currentPiecePosition.x++;
+                updateBoard();
+            }
+        });
+
+        downBtn.addEventListener('click', () => {
+            if (currentPiece) {
+                moveDown();
+            }
+        });
+
+        rotateBtn.addEventListener('click', () => {
+            if (!currentPiece) return;
+            const rotated = currentPiece.shape[0].map((_, i) => 
+                currentPiece.shape.map(row => row[row.length - 1 - i]));
+            if (canMove(currentPiecePosition.x, currentPiecePosition.y, rotated)) {
+                currentPiece.shape = rotated;
+                updateBoard();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!gameInterval) return;
+            switch (e.key) {
+                case 'ArrowLeft':
+                    if (canMove(currentPiecePosition.x - 1, currentPiecePosition.y)) {
+                        currentPiecePosition.x--;
+                        updateBoard();
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (canMove(currentPiecePosition.x + 1, currentPiecePosition.y)) {
+                        currentPiecePosition.x++;
+                        updateBoard();
+                    }
+                    break;
+                case 'ArrowDown':
+                    moveDown();
+                    break;
+                case 'ArrowUp':
+                    const rotated = currentPiece.shape[0].map((_, i) => 
+                        currentPiece.shape.map(row => row[row.length - 1 - i]));
+                    if (canMove(currentPiecePosition.x, currentPiecePosition.y, rotated)) {
+                        currentPiece.shape = rotated;
+                        updateBoard();
+                    }
+                    break;
+            }
+        });
+
+        // Initialize the game board
+        initBoard();
+    </script>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>The Money Focus provides free online games and financial education resources to help you learn while having fun.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="terms.html">Terms</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Money Focus. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
